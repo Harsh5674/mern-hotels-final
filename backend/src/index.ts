@@ -17,7 +17,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string);
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
+.then(() => {
+  console.log("Connected to Database!");
+})
+
 
 const app = express();
 app.use(cookieParser());
@@ -42,6 +46,6 @@ app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
 });
 
-app.listen(7000, () => {
-  console.log("server running on localhost:7000");
+app.listen(4000, () => {
+  console.log("server running on port 4000");
 });
