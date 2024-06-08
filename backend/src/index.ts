@@ -21,7 +21,9 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
 .then(() => {
   console.log("Connected to Database!");
 })
-
+.catch(() => {
+ console.log("Connection to Database failed!");
+});
 
 const app = express();
 app.use(cookieParser());
