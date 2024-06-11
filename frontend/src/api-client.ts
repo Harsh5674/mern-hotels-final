@@ -53,7 +53,7 @@ export const signIn = async (formData: SignInFormData) => {
   return body;
 };
 
-export const validateToken = async () => {
+export const validateToken = async (): Promise<{ userId: string; email: string }> => {
   const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     credentials: "include",
   });
@@ -64,6 +64,7 @@ export const validateToken = async () => {
 
   return response.json();
 };
+
 
 export const signOut = async () => {
   const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {

@@ -56,7 +56,7 @@ router.post(
 );
 
 router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
-  res.status(200).send({ userId: req.userId });
+  res.status(200).send({ userId: req.userId, email: req.userEmail });
 });
 
 router.post("/logout", (req: Request, res: Response) => {

@@ -15,6 +15,7 @@ type AppContext = {
   showToast: (toastMessage: ToastMessage) => void;
   isLoggedIn: boolean;
   stripePromise: Promise<Stripe | null>;
+  userEmail?: string; // Add userEmail to the context type
 };
 
 const AppContext = React.createContext<AppContext | undefined>(undefined);
@@ -27,9 +28,16 @@ export const AppContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState<string | undefined>(undefined);
 
   const { isError } = useQuery("validateToken", apiClient.validateToken, {
     retry: false,
+    onSuccess: (data) => {
+      console.log("User data:", data);
+      if (data && data.email) {
+        setUserEmail(data.email);
+      }
+    },
   });
 
   return (
@@ -40,6 +48,7 @@ export const AppContextProvider = ({
         },
         isLoggedIn: !isError,
         stripePromise,
+        userEmail,
       }}
     >
       {toast && (

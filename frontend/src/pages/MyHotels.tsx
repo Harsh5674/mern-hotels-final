@@ -1,8 +1,10 @@
+//import React from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import * as apiClient from "../api-client";
 import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
+import { useAppContext } from "../contexts/AppContext";
 
 const MyHotels = () => {
   const { data: hotelData } = useQuery(
@@ -13,20 +15,29 @@ const MyHotels = () => {
     }
   );
 
+  const { isLoggedIn, userEmail } = useAppContext();
+
+  console.log("Is Logged In:", isLoggedIn);
+  console.log("User Email:", userEmail);
+
   if (!hotelData) {
     return <span>No Hotels found</span>;
   }
+
+  //const showButtons = user.isLoggedIn && user.email === "a2a2a@gmail.com";
 
   return (
     <div className="space-y-5">
       <span className="flex justify-between">
         <h1 className="text-3xl font-bold">My Hotels</h1>
-        <Link
-          to="/add-hotel"
-          className="flex bg-blue-600 text-white text-xl font-bold p-2 hover:bg-blue-500"
-        >
-          Add Hotel
-        </Link>
+        {isLoggedIn && userEmail === "a2a2a@gmail.com" && (
+          <Link
+            to="/add-hotel"
+            className="flex bg-blue-600 text-white text-xl font-bold p-2 hover:bg-blue-500"
+          >
+            Add Hotel
+          </Link>
+        )}
       </span>
       <div className="grid grid-cols-1 gap-8">
         {hotelData.map((hotel) => (
@@ -57,9 +68,17 @@ const MyHotels = () => {
                 {hotel.starRating} Star Rating
               </div>
             </div>
-            <span className="flex justify-end">
+            <span className="flex justify-end space-x-4">
+            {isLoggedIn && userEmail === "a2a2a@gmail.com" && (
+                <Link
+                  to={`/edit-hotel/${hotel._id}`}
+                  className="flex bg-blue-600 text-white text-xl font-bold p-2 hover:bg-blue-500"
+                >
+                  Edit Hotel
+                </Link>
+                )}
               <Link
-                to={`/edit-hotel/${hotel._id}`}
+                to={`/detail/${hotel._id}`}
                 className="flex bg-blue-600 text-white text-xl font-bold p-2 hover:bg-blue-500"
               >
                 View Details
@@ -73,3 +92,5 @@ const MyHotels = () => {
 };
 
 export default MyHotels;
+
+// do ctrlz till you not see this
